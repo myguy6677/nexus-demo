@@ -941,12 +941,159 @@
   function initTouchEvents() {
     if (!state.isMobile) return;
 
+    // Touch moves particle background
     document.addEventListener('touchmove', (e) => {
       if (e.touches.length > 0) {
+        state.mouse.x = e.touches[0].clientX;
+        state.mouse.y = e.touches[0].clientY;
         state.mouse.nx = e.touches[0].clientX / window.innerWidth;
         state.mouse.ny = e.touches[0].clientY / window.innerHeight;
       }
     });
+
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) {
+        state.mouse.x = e.touches[0].clientX;
+        state.mouse.y = e.touches[0].clientY;
+        state.mouse.nx = e.touches[0].clientX / window.innerWidth;
+        state.mouse.ny = e.touches[0].clientY / window.innerHeight;
+      }
+    });
+
+    // ── Touch Ripple Effect ──
+    // Creates an expanding ring wherever you tap
+    document.addEventListener('touchstart', (e) => {
+      const touch = e.touches[0];
+      const ripple = document.createElement('div');
+      ripple.className = 'touch-ripple';
+      ripple.style.left = touch.clientX + 'px';
+      ripple.style.top = touch.clientY + 'px';
+      document.body.appendChild(ripple);
+      ripple.addEventListener('animationend', () => ripple.remove());
+    });
+
+    // ── Gyroscope / Accelerometer Tilt ──
+    // Tilts cards and moves particle background when phone is tilted
+    if (window.DeviceOrientationEvent) {
+      const requestPermission = typeof DeviceOrientationEvent.requestPermission === 'function';
+
+      function handleOrientation(e) {
+        const gamma = (e.gamma || 0) / 90; // left-right tilt, -1 to 1
+        const beta = ((e.beta || 0) - 45) / 90; // front-back tilt, normalized
+
+        // Feed into particle background
+        state.mouse.nx = 0.5 + gamma * 0.5;
+        state.mouse.ny = 0.5 + beta * 0.5;
+
+        // Tilt cards with gyroscope
+        document.querySelectorAll('[data-tilt]').forEach(el => {
+          const rect = el.getBoundingClientRect();
+          const inView = rect.top < window.innerHeight && rect.bottom > 0;
+          if (inView) {
+            el.style.transform = `perspective(800px) rotateY(${gamma * 12}deg) rotateX(${-beta * 12}deg)`;
+          }
+        });
+
+        // Parallax floating shapes
+        document.querySelectorAll('.shape').forEach((shape, i) => {
+          const depth = (i + 1) * 8;
+          shape.style.transform += ` translate(${gamma * depth}px, ${beta * depth}px)`;
+        });
+      }
+
+      if (requestPermission) {
+        // iOS 13+ requires permission request on user gesture
+        document.addEventListener('touchstart', function requestGyro() {
+          DeviceOrientationEvent.requestPermission()
+            .then(response => {
+              if (response === 'granted') {
+                window.addEventListener('deviceorientation', handleOrientation);
+              }
+            }).catch(() => {});
+          document.removeEventListener('touchstart', requestGyro);
+        }, { once: true });
+      } else {
+        window.addEventListener('deviceorientation', handleOrientation);
+      }
+    }
+
+    // ── Touch Feedback on Cards ──
+    // Press-and-hold scale effect on interactive elements
+    const touchTargets = document.querySelectorAll('.tech-card, .project-card, .about-card, .btn, .lab-btn, .filter-btn');
+    touchTargets.forEach(el => {
+      el.addEventListener('touchstart', () => {
+        el.style.transition = 'transform 0.15s ease';
+        el.style.transform = 'scale(0.97)';
+      });
+      el.addEventListener('touchend', () => {
+        el.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+        el.style.transform = '';
+      });
+      el.addEventListener('touchcancel', () => {
+        el.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+        el.style.transform = '';
+      });
+    });
+
+    // ── Swipeable Project Cards ──
+    // Horizontal swipe to cycle through projects on mobile
+    const projectsGrid = document.querySelector('.projects-grid');
+    if (projectsGrid) {
+      let startX = 0;
+      let scrollStart = 0;
+      let isDragging = false;
+
+      projectsGrid.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        scrollStart = projectsGrid.scrollLeft;
+        isDragging = true;
+        projectsGrid.style.scrollBehavior = 'auto';
+      });
+
+      projectsGrid.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        const dx = startX - e.touches[0].clientX;
+        projectsGrid.scrollLeft = scrollStart + dx;
+      });
+
+      projectsGrid.addEventListener('touchend', () => {
+        isDragging = false;
+        projectsGrid.style.scrollBehavior = 'smooth';
+        // Snap to nearest card
+        const cardWidth = projectsGrid.querySelector('.project-card').offsetWidth + 16;
+        const snapIndex = Math.round(projectsGrid.scrollLeft / cardWidth);
+        projectsGrid.scrollLeft = snapIndex * cardWidth;
+      });
+    }
+
+    // ── Interactive Touch on Lab Canvases ──
+    // Tapping/dragging on neural canvas creates nodes at touch position
+    const neuralCanvas = document.getElementById('neural-canvas');
+    if (neuralCanvas) {
+      neuralCanvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        const rect = neuralCanvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        neuralCanvas.dispatchEvent(new MouseEvent('click', {
+          clientX: touch.clientX,
+          clientY: touch.clientY,
+        }));
+      });
+    }
+
+    // Touch drag on wave canvas adjusts the visualization
+    const waveCanvas = document.getElementById('wave-canvas');
+    if (waveCanvas) {
+      waveCanvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        const rect = waveCanvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        const nx = (touch.clientX - rect.left) / rect.width;
+        const ny = (touch.clientY - rect.top) / rect.height;
+        document.getElementById('wave-freq').value = Math.round(nx * 19 + 1);
+        document.getElementById('wave-amp').value = Math.round((1 - ny) * 90 + 10);
+      });
+    }
   }
 
   // ─── Resize Handler ───
