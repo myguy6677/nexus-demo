@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS — Start a Project</title>
+  <meta name="description" content="Tell us about your project. Get a custom website with clean animations, built fast and deployed on Cloudflare.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="NEXUS — Start a Project">
+  <meta property="og:description" content="Submit your project inquiry and get a response within 48 hours.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://nexus-ai.dev/form.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       NEXUS FORM — Multi-Step Submission
+    ============================================ */
+
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #0f0f1a;
+      --bg-tertiary: #141428;
+      --bg-card: rgba(15, 15, 30, 0.8);
+      --text-primary: #e8e8f0;
+      --text-secondary: #8888a8;
+      --text-muted: #555570;
+      --accent-cyan: #00f0ff;
+      --accent-purple: #8b5cf6;
+      --accent-magenta: #d946ef;
+      --accent-green: #10b981;
+      --border-color: rgba(136, 136, 168, 0.12);
+      --border-active: rgba(0, 240, 255, 0.4);
+      --glow-cyan: 0 0 30px rgba(0, 240, 255, 0.25);
+      --glow-purple: 0 0 30px rgba(139, 92, 246, 0.25);
+      --font-primary: 'Space Grotesk', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent-cyan) var(--bg-primary);
+    }
+
+    body {
+      font-family: var(--font-primary);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      cursor: none;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { border: none; background: none; font-family: inherit; cursor: none; color: inherit; }
+    ::selection { background: var(--accent-cyan); color: var(--bg-primary); }
+
+    /* ─── WebGL Lightning Canvas ─── */
+    #lightning-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ─── Custom Cursor ─── */
+    .cursor-dot {
+      position: fixed; width: 6px; height: 6px;
+      background: var(--accent-cyan); border-radius: 50%;
+      pointer-events: none; z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, background 0.2s;
+    }
+    .cursor-ring {
+      position: fixed; width: 32px; height: 32px;
+      border: 1.5px solid rgba(0, 240, 255, 0.5); border-radius: 50%;
+      pointer-events: none; z-index: 99998;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), border-color 0.3s;
+    }
+    .cursor-dot.hovering { width: 10px; height: 10px; background: var(--accent-purple); }
+    .cursor-ring.hovering { width: 48px; height: 48px; border-color: rgba(139, 92, 246, 0.6); }
+
+    /* ─── Back button ─── */
+    .back-btn {
+      position: fixed; top: 28px; left: 32px; z-index: 100;
+      display: flex; align-items: center; gap: 10px;
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-secondary);
+      padding: 10px 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      transition: color 0.3s, border-color 0.3s, box-shadow 0.3s;
+      background: rgba(10, 10, 15, 0.6);
+      backdrop-filter: blur(8px);
+    }
+    .back-btn:hover {
+      color: var(--accent-cyan); border-color: var(--border-active);
+      box-shadow: var(--glow-cyan);
+    }
+    .back-btn svg { width: 14px; height: 14px; }
+
+    /* ─── System status top-right ─── */
+    .system-status {
+      position: fixed; top: 28px; right: 32px; z-index: 100;
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.15em; color: var(--text-muted);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .status-pulse {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 8px var(--accent-green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    /* ─── Main Layout ─── */
+    .form-app {
+      position: relative; z-index: 10;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 100px 24px 60px;
+    }
+
+    /* ─── Progress Header ─── */
+    .progress-header {
+      width: 100%; max-width: 640px;
+      margin-bottom: 32px;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+    }
+    .progress-header.visible { opacity: 1; transform: translateY(0); }
+
+    .progress-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 12px;
+    }
+    .progress-label {
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.2em; color: var(--text-muted);
+    }
+    .progress-counter {
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.2em; color: var(--accent-cyan);
+    }
+
+    .progress-track {
+      width: 100%; height: 2px;
+      background: var(--border-color); border-radius: 2px;
+      overflow: hidden; margin-bottom: 16px;
+    }
+    .progress-fill {
+      height: 100%; border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+      transition: width 0.5s var(--ease-out-expo);
+    }
+
+    .step-dots { display: flex; gap: 8px; justify-content: center; }
+    .step-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      border: 1.5px solid var(--text-muted);
+      transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+    }
+    .step-dot.active {
+      border-color: var(--accent-cyan); background: var(--accent-cyan);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+    }
+    .step-dot.done {
+      border-color: var(--accent-purple); background: var(--accent-purple);
+    }
+
+    /* ─── Form Card ─── */
+    .form-card {
+      position: relative; width: 100%; max-width: 640px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
+    }
+    .form-card.visible { opacity: 1; transform: translateY(0); }
+
+    .form-card-glow {
+      position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+      width: 200px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+    }
+
+    /* ─── Step Panels ─── */
+    .step-panel {
+      display: none; padding: 48px 48px 32px;
+      animation: stepEnter 0.5s var(--ease-out-expo) forwards;
+    }
+    .step-panel.active { display: block; }
+    .step-panel.exiting {
+      animation: stepExit 0.35s var(--ease-out-quart) forwards;
+    }
+
+    @keyframes stepEnter {
+      from { opacity: 0; transform: translateX(40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes stepExit {
+      from { opacity: 1; transform: translateX(0); }
+      to { opacity: 0; transform: translateX(-40px); }
+    }
+    @keyframes stepEnterBack {
+      from { opacity: 0; transform: translateX(-40px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes stepExitBack {
+      from { opacity: 1; transform: translateX(0); }
+      to { opacity: 0; transform: translateX(40px); }
+    }
+
+    .step-eyebrow {
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.2em; color: var(--accent-cyan);
+      margin-bottom: 12px;
+    }
+    .step-title {
+      font-size: 28px; font-weight: 600; letter-spacing: -0.02em;
+      line-height: 1.2; margin-bottom: 8px;
+    }
+    .step-title .accent {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .step-desc {
+      font-size: 14px; color: var(--text-secondary);
+      line-height: 1.6; margin-bottom: 32px;
+    }
+
+    /* ─── Fields ─── */
+    .field-group { margin-bottom: 24px; }
+    .field-label {
+      display: block; font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-secondary); margin-bottom: 10px;
+    }
+    .field-input, .field-textarea, .field-select {
+      width: 100%; padding: 14px 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-color); border-radius: 8px;
+      color: var(--text-primary); font-family: var(--font-primary);
+      font-size: 15px; outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .field-input::placeholder, .field-textarea::placeholder {
+      color: var(--text-muted);
+    }
+    .field-input:focus, .field-textarea:focus, .field-select:focus {
+      border-color: var(--border-active);
+      box-shadow: 0 0 0 3px rgba(0,240,255,0.08);
+    }
+    .field-input.error, .field-textarea.error {
+      border-color: #ff4466;
+      box-shadow: 0 0 0 3px rgba(255,68,102,0.08);
+    }
+    .field-textarea { resize: vertical; min-height: 120px; }
+    .field-select {
+      appearance: none; cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238888a8' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+    }
+    .field-error {
+      font-family: var(--font-mono); font-size: 11px;
+      color: #ff4466; margin-top: 6px;
+      opacity: 0; height: 0; overflow: hidden;
+      transition: opacity 0.3s, height 0.3s;
+    }
+    .field-error.visible { opacity: 1; height: auto; }
+    .field-hint {
+      font-family: var(--font-mono); font-size: 9px;
+      color: var(--text-muted); letter-spacing: 0.05em;
+      margin-top: 6px;
+    }
+
+    /* ─── Two-column row ─── */
+    .field-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+
+    /* ─── Radio Cards ─── */
+    .radio-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+      margin-bottom: 28px;
+    }
+    .radio-card {
+      position: relative; cursor: pointer;
+    }
+    .radio-card input { position: absolute; opacity: 0; pointer-events: none; }
+    .radio-card-inner {
+      padding: 20px 16px; border: 1px solid var(--border-color);
+      border-radius: 12px; text-align: center;
+      transition: border-color 0.3s, background 0.3s, box-shadow 0.3s, transform 0.2s;
+    }
+    .radio-card:hover .radio-card-inner {
+      border-color: rgba(0,240,255,0.2); background: rgba(0,240,255,0.02);
+      transform: translateY(-2px);
+    }
+    .radio-card input:checked + .radio-card-inner {
+      border-color: var(--accent-cyan); background: rgba(0,240,255,0.06);
+      box-shadow: 0 0 20px rgba(0,240,255,0.1);
+    }
+    .radio-card-icon { font-size: 28px; display: block; margin-bottom: 10px; }
+    .radio-card-title {
+      font-size: 14px; font-weight: 600; margin-bottom: 4px;
+    }
+    .radio-card-desc {
+      font-size: 11px; color: var(--text-muted); line-height: 1.4;
+    }
+    .radio-check {
+      position: absolute; top: 12px; right: 12px;
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 1.5px solid var(--border-color);
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .radio-card input:checked ~ .radio-check {
+      border-color: var(--accent-cyan); background: var(--accent-cyan);
+      box-shadow: 0 0 8px rgba(0,240,255,0.4);
+    }
+
+    /* ─── Pill selectors ─── */
+    .pill-group {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px;
+    }
+    .pill { position: relative; cursor: pointer; }
+    .pill input { position: absolute; opacity: 0; pointer-events: none; }
+    .pill-inner {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 16px;
+      border: 1px solid var(--border-color); border-radius: 100px;
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-secondary);
+      transition: border-color 0.3s, color 0.3s, background 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .pill input:checked + .pill-inner {
+      border-color: var(--accent-cyan); color: var(--accent-cyan);
+      background: rgba(0,240,255,0.06);
+      box-shadow: 0 0 12px rgba(0,240,255,0.15);
+    }
+
+    /* ─── Checkbox ─── */
+    .checkbox-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+    .checkbox-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      cursor: pointer; padding: 8px 0;
+      -webkit-user-select: none; user-select: none;
+    }
+    .checkbox-item input[type="checkbox"] {
+      width: 0; height: 0; position: absolute; opacity: 0; pointer-events: none;
+    }
+    .checkbox-box {
+      width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px;
+      border: 1.5px solid var(--border-color); border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .checkbox-item.checked .checkbox-box {
+      border-color: var(--accent-cyan); background: var(--accent-cyan);
+    }
+    .checkbox-check {
+      opacity: 0; transition: opacity 0.2s;
+      width: 12px; height: 12px;
+    }
+    .checkbox-item.checked .checkbox-check { opacity: 1; }
+    .checkbox-text { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+    .checkbox-text strong { color: var(--text-primary); font-weight: 500; }
+
+    /* ─── Budget Slider ─── */
+    .budget-display {
+      display: flex; align-items: baseline; gap: 12px;
+      margin-bottom: 16px;
+    }
+    .budget-value {
+      font-size: 36px; font-weight: 700; letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .budget-hint {
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.15em; color: var(--text-muted);
+    }
+
+    input[type="range"] {
+      width: 100%; height: 4px; appearance: none;
+      background: var(--border-color); border-radius: 4px;
+      outline: none; margin-bottom: 8px;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none; width: 20px; height: 20px;
+      border-radius: 50%; background: var(--accent-cyan);
+      box-shadow: 0 0 10px rgba(0,240,255,0.4);
+      cursor: pointer;
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 20px; height: 20px; border: none;
+      border-radius: 50%; background: var(--accent-cyan);
+      box-shadow: 0 0 10px rgba(0,240,255,0.4);
+      cursor: pointer;
+    }
+    .budget-ticks {
+      display: flex; justify-content: space-between;
+      font-family: var(--font-mono); font-size: 9px;
+      color: var(--text-muted); letter-spacing: 0.05em;
+    }
+
+    /* ─── Footer nav ─── */
+    .step-nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 48px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .btn-back {
+      display: flex; align-items: center; gap: 8px;
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 12px 20px; border-radius: 4px;
+      border: 1px solid transparent;
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .btn-back:hover { color: var(--text-primary); border-color: var(--border-color); }
+    .btn-back.hidden { visibility: hidden; }
+
+    .btn-next {
+      position: relative; display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 32px; border-radius: 6px;
+      font-family: var(--font-mono); font-size: 12px;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+      color: var(--bg-primary); font-weight: 600;
+      overflow: hidden; transition: transform 0.2s, box-shadow 0.3s;
+    }
+    .btn-next:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,240,255,0.3), 0 4px 15px rgba(139,92,246,0.2);
+    }
+    .btn-next:active { transform: translateY(0); }
+    .btn-next .btn-shine {
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
+      transform: translateX(-100%);
+      transition: transform 0.5s;
+    }
+    .btn-next:hover .btn-shine { transform: translateX(100%); }
+    .btn-next svg { width: 14px; height: 14px; }
+
+    /* ─── Text Scramble ─── */
+    .scramble-char {
+      display: inline;
+      white-space: pre;
+      transition: color 0.15s;
+    }
+    .scramble-char.scrambling {
+      color: var(--accent-cyan);
+    }
+
+    /* ─── Success Screen ─── */
+    .success-screen {
+      display: none; padding: 64px 48px;
+      text-align: center;
+      animation: stepEnter 0.6s var(--ease-out-expo) forwards;
+    }
+    .success-screen.active { display: block; }
+
+    .success-icon {
+      width: 80px; height: 80px; border-radius: 50%;
+      border: 2px solid var(--accent-cyan);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 32px;
+      position: relative;
+      box-shadow: 0 0 40px rgba(0,240,255,0.2);
+    }
+    .success-icon::before, .success-icon::after {
+      content: ''; position: absolute; border-radius: 50%;
+      animation: successPulse 2s ease-out infinite;
+    }
+    .success-icon::before {
+      inset: -10px; border: 1px solid rgba(0,240,255,0.3);
+      animation-delay: 0.3s;
+    }
+    .success-icon::after {
+      inset: -20px; border: 1px solid rgba(0,240,255,0.15);
+      animation-delay: 0.6s;
+    }
+    @keyframes successPulse {
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(1.3); }
+    }
+    .success-icon svg { width: 32px; height: 32px; color: var(--accent-cyan); }
+
+    .success-title {
+      font-size: 32px; font-weight: 600; letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .success-sub {
+      font-size: 14px; color: var(--text-secondary); line-height: 1.7;
+      max-width: 380px; margin: 0 auto 40px;
+    }
+    .success-code {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.15em; color: var(--text-muted);
+      padding: 10px 20px; border: 1px solid var(--border-color); border-radius: 100px;
+      margin-bottom: 32px;
+    }
+    .success-code .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green);
+    }
+
+    .btn-return {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px; border-radius: 6px;
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      border: 1px solid var(--border-color); color: var(--text-secondary);
+      transition: border-color 0.3s, color 0.3s, box-shadow 0.3s;
+    }
+    .btn-return:hover {
+      border-color: var(--border-active); color: var(--accent-cyan);
+      box-shadow: var(--glow-cyan);
+    }
+
+    /* ─── Particle burst (success) ─── */
+    .burst-particle {
+      position: fixed;
+      width: 4px; height: 4px; border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 600px) {
+      .step-panel { padding: 32px 24px; }
+      .step-nav { padding: 20px 24px; }
+      .radio-grid { grid-template-columns: 1fr; }
+      .field-row { grid-template-columns: 1fr; }
+      .step-title { font-size: 22px; }
+      .back-btn { display: none; }
+      body { cursor: auto; }
+      .cursor-dot, .cursor-ring { display: none; }
+    }
+    /* ─── Page Entrance ─── */
+    body {
+      animation: pageIn 0.5s ease-out;
+    }
+    @keyframes pageIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- WebGL Lightning Background -->
+  <canvas id="lightning-canvas"></canvas>
+
+  <!-- Custom Cursor -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+
+  <!-- Back to site -->
+  <a href="index.html" class="back-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M19 12H5M12 5l-7 7 7 7"/>
+    </svg>
+    <span>Back to NEXUS</span>
+  </a>
+
+  <!-- Status -->
+  <div class="system-status">
+    <div class="status-pulse"></div>
+    <span id="system-time">00:00:00</span>
+  </div>
+
+  <!-- App -->
+  <div class="form-app">
+
+    <!-- Progress Header -->
+    <div class="progress-header" id="progress-header">
+      <div class="progress-meta">
+        <span class="progress-label">PROJECT INQUIRY</span>
+        <span class="progress-counter" id="step-counter">STEP 01 / 06</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width: 16.6%"></div>
+      </div>
+      <div class="step-dots" id="step-dots">
+        <div class="step-dot active"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+      </div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="form-card" id="form-card">
+      <div class="form-card-glow"></div>
+
+      <!-- ── STEP 1 — About You ── -->
+      <div class="step-panel active" data-step="1" id="step-1">
+        <div class="step-eyebrow">LET'S CONNECT</div>
+        <h1 class="step-title">Who are <span class="accent">you?</span></h1>
+        <p class="step-desc">Tell us a bit about yourself so we know who we're working with.</p>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label" for="first-name">First Name</label>
+            <input class="field-input" type="text" id="first-name" name="first-name" placeholder="Jane" autocomplete="given-name">
+            <div class="field-error" id="err-first-name">↳ First name is required</div>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="last-name">Last Name</label>
+            <input class="field-input" type="text" id="last-name" name="last-name" placeholder="Foster" autocomplete="family-name">
+            <div class="field-error" id="err-last-name">↳ Last name is required</div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="email">Email Address</label>
+          <input class="field-input" type="email" id="email" name="email" placeholder="jane@example.com" autocomplete="email">
+          <div class="field-error" id="err-email">↳ Valid email required</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="phone">Phone Number <span style="color:var(--text-muted)">(optional)</span></label>
+          <input class="field-input" type="tel" id="phone" name="phone" placeholder="(555) 123-4567" autocomplete="tel">
+        </div>
+      </div>
+
+      <!-- ── STEP 2 — Your Business ── -->
+      <div class="step-panel" data-step="2" id="step-2">
+        <div class="step-eyebrow">YOUR BUSINESS</div>
+        <h1 class="step-title">Tell us about your <span class="accent">business.</span></h1>
+        <p class="step-desc">Understanding your business helps us create something that truly fits.</p>
+
+        <div class="field-group">
+          <label class="field-label" for="business-name">Business Name</label>
+          <input class="field-input" type="text" id="business-name" name="business-name" placeholder="Sunrise Café">
+          <div class="field-error" id="err-business-name">↳ Business name is required</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="business-type">Industry / Type</label>
+          <select class="field-select" id="business-type" name="business-type">
+            <option value="" disabled selected>Select your industry</option>
+            <option value="restaurant">Restaurant / Café / Bar</option>
+            <option value="retail">Retail / E-commerce</option>
+            <option value="health">Health & Wellness</option>
+            <option value="professional">Professional Services</option>
+            <option value="construction">Construction / Trades</option>
+            <option value="beauty">Beauty / Salon / Spa</option>
+            <option value="fitness">Fitness / Gym</option>
+            <option value="realestate">Real Estate</option>
+            <option value="creative">Creative / Portfolio</option>
+            <option value="nonprofit">Nonprofit / Community</option>
+            <option value="tech">Tech / SaaS</option>
+            <option value="other">Other</option>
+          </select>
+          <div class="field-error" id="err-business-type">↳ Please select your industry</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="website-current">Current Website <span style="color:var(--text-muted)">(if any)</span></label>
+          <input class="field-input" type="url" id="website-current" name="website-current" placeholder="https://yoursite.com">
+          <div class="field-hint">Leave blank if you don't have one yet — that's totally fine!</div>
+        </div>
+      </div>
+
+      <!-- ── STEP 3 — What You Need ── -->
+      <div class="step-panel" data-step="3" id="step-3">
+        <div class="step-eyebrow">YOUR PROJECT</div>
+        <h1 class="step-title">What do you <span class="accent">need?</span></h1>
+        <p class="step-desc">Select the type of project you're looking for. Pick all that apply.</p>
+
+        <div class="radio-grid" id="project-type-grid">
+          <label class="radio-card">
+            <input type="checkbox" name="project-type" value="new-website">
+            <div class="radio-card-inner">
+              <span class="radio-card-icon">🚀</span>
+              <div class="radio-card-title">New Website</div>
+              <div class="radio-card-desc">Built from scratch, fully custom</div>
+            </div>
+            <div class="radio-check"></div>
+          </label>
+          <label class="radio-card">
+            <input type="checkbox" name="project-type" value="redesign">
+            <div class="radio-card-inner">
+              <span class="radio-card-icon">✨</span>
+              <div class="radio-card-title">Redesign</div>
+              <div class="radio-card-desc">Modernize your existing site</div>
+            </div>
+            <div class="radio-check"></div>
+          </label>
+          <label class="radio-card">
+            <input type="checkbox" name="project-type" value="landing-page">
+            <div class="radio-card-inner">
+              <span class="radio-card-icon">📄</span>
+              <div class="radio-card-title">Landing Page</div>
+              <div class="radio-card-desc">Single focused page that converts</div>
+            </div>
+            <div class="radio-check"></div>
+          </label>
+          <label class="radio-card">
+            <input type="checkbox" name="project-type" value="other">
+            <div class="radio-card-inner">
+              <span class="radio-card-icon">💡</span>
+              <div class="radio-card-title">Something Else</div>
+              <div class="radio-card-desc">Tell us about it in the next step</div>
+            </div>
+            <div class="radio-check"></div>
+          </label>
+        </div>
+        <div class="field-error" id="err-project-type">↳ Please select at least one project type</div>
+      </div>
+
+      <!-- ── STEP 4 — Details ── -->
+      <div class="step-panel" data-step="4" id="step-4">
+        <div class="step-eyebrow">THE DETAILS</div>
+        <h1 class="step-title">Tell us <span class="accent">more.</span></h1>
+        <p class="step-desc">The more context you share, the better we can help. Don't overthink it — just give us the gist.</p>
+
+        <div class="field-group">
+          <label class="field-label" for="project-goals">What are you hoping to achieve?</label>
+          <textarea class="field-textarea" id="project-goals" name="project-goals" placeholder="More customers? Better online presence? Showcase your menu or services? Let us know what success looks like for you..."></textarea>
+          <div class="field-error" id="err-goals">↳ Tell us a bit about your goals (at least 10 characters)</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="inspiration">Any websites you like? <span style="color:var(--text-muted)">(optional)</span></label>
+          <input class="field-input" type="text" id="inspiration" name="inspiration" placeholder="e.g. apple.com, stripe.com — or just describe the vibe">
+          <div class="field-hint">Drop links or describe the style you're going for</div>
+        </div>
+
+        <label class="field-label">Timeline</label>
+        <div class="pill-group" id="timeline-group">
+          <label class="pill"><input type="radio" name="timeline" value="asap"><span class="pill-inner">ASAP</span></label>
+          <label class="pill"><input type="radio" name="timeline" value="2-4weeks"><span class="pill-inner">2–4 weeks</span></label>
+          <label class="pill"><input type="radio" name="timeline" value="1-2months"><span class="pill-inner">1–2 months</span></label>
+          <label class="pill"><input type="radio" name="timeline" value="flexible"><span class="pill-inner">Flexible</span></label>
+        </div>
+      </div>
+
+      <!-- ── STEP 5 — Budget & Referral ── -->
+      <div class="step-panel" data-step="5" id="step-5">
+        <div class="step-eyebrow">BUDGET & REFERRAL</div>
+        <h1 class="step-title">Almost <span class="accent">there.</span></h1>
+        <p class="step-desc">Give us a sense of your budget and how you found us.</p>
+
+        <div class="field-group">
+          <label class="field-label">Budget Range</label>
+          <div class="budget-display">
+            <span class="budget-value" id="budget-display">$500</span>
+            <span class="budget-hint">USD / project</span>
+          </div>
+          <input type="range" id="budget-range" min="100" max="2000" step="50" value="500">
+          <div class="budget-ticks">
+            <span class="budget-tick">$100</span>
+            <span class="budget-tick">$500</span>
+            <span class="budget-tick">$1,000</span>
+            <span class="budget-tick">$1,500</span>
+            <span class="budget-tick">$2,000</span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="referral">How did you hear about us?</label>
+          <select class="field-select" id="referral" name="referral">
+            <option value="" disabled selected>Select one</option>
+            <option value="google">Google Search</option>
+            <option value="social">Social Media</option>
+            <option value="referral">Referral / Word of mouth</option>
+            <option value="facebook">Facebook</option>
+            <option value="instagram">Instagram</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="additional">Anything else? <span style="color:var(--text-muted)">(optional)</span></label>
+          <textarea class="field-textarea" id="additional" name="additional" style="min-height: 80px" placeholder="Questions, special requests, deadlines — anything we should know."></textarea>
+        </div>
+      </div>
+
+      <!-- ── STEP 6 — Confirm ── -->
+      <div class="step-panel" data-step="6" id="step-6">
+        <div class="step-eyebrow">FINAL STEP</div>
+        <h1 class="step-title">Ready to <span class="accent">submit?</span></h1>
+        <p class="step-desc">Review your info and hit submit. We'll get back to you within 48 hours.</p>
+
+        <!-- Summary preview -->
+        <div id="summary-preview" style="
+          background: rgba(0,240,255,0.03);
+          border: 1px solid var(--border-color);
+          border-radius: 10px;
+          padding: 24px;
+          margin-bottom: 28px;
+          font-size: 13px;
+          line-height: 1.8;
+        ">
+          <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; color: var(--accent-cyan); margin-bottom: 12px;">SUBMISSION SUMMARY</div>
+          <div id="summary-content"></div>
+        </div>
+
+        <div class="checkbox-group">
+          <div class="checkbox-item" id="terms-item">
+            <input type="checkbox" id="terms-check">
+            <div class="checkbox-box">
+              <svg class="checkbox-check" viewBox="0 0 10 10" fill="none" stroke="var(--bg-primary)" stroke-width="2">
+                <polyline points="1.5,5 4,7.5 8.5,2.5"/>
+              </svg>
+            </div>
+            <span class="checkbox-text"><strong>I agree</strong> — My information is accurate and I consent to being contacted about my project.</span>
+          </div>
+        </div>
+        <div class="field-error" id="err-terms">↳ Please agree before submitting</div>
+      </div>
+
+      <!-- ── SUCCESS ── -->
+      <div class="success-screen" id="success-screen">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h2 class="success-title">Submission Received</h2>
+        <p class="success-sub">Thanks for reaching out! We've received your project inquiry and will get back to you within 48 hours.</p>
+        <div class="success-code">
+          <div class="dot"></div>
+          <span id="submission-id">NXS-000000</span>
+        </div>
+        <a href="index.html" class="btn-return">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+          </svg>
+          Return to NEXUS
+        </a>
+      </div>
+
+      <!-- Nav Bar -->
+      <div class="step-nav" id="step-nav">
+        <button class="btn-back hidden" id="btn-back">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+          </svg>
+          Back
+        </button>
+        <button class="btn-next" id="btn-next">
+          <span class="btn-shine"></span>
+          <span id="btn-next-text">Continue</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+
+    </div><!-- /form-card -->
+  </div><!-- /form-app -->
+
+  <script>
+    /* ============================================
+       NEXUS FORM — Application Script
+    ============================================ */
+    (function () {
+      'use strict';
+
+      const TOTAL_STEPS = 6;
+
+      const state = {
+        currentStep: 1,
+        isMobile: window.innerWidth <= 600,
+      };
+
+      // ─── WebGL Lightning Background (ported from hero-odyssey.tsx) ───
+      function initLightning() {
+        const canvas = document.getElementById('lightning-canvas');
+        if (!canvas) { console.warn('No lightning canvas'); return; }
+
+        const gl = canvas.getContext('webgl', { alpha: false, antialias: false })
+                || canvas.getContext('experimental-webgl', { alpha: false });
+        if (!gl) { console.warn('No WebGL support'); return; }
+
+        function resize() {
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          canvas.width = Math.floor(window.innerWidth * dpr);
+          canvas.height = Math.floor(window.innerHeight * dpr);
+          gl.viewport(0, 0, canvas.width, canvas.height);
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        // Vertex shader
+        const vertSrc = [
+          'attribute vec2 position;',
+          'void main() { gl_Position = vec4(position, 0.0, 1.0); }'
+        ].join('\n');
+
+        // Fragment shader — exact port of Hero Odyssey lightning
+        const fragSrc = [
+          'precision mediump float;',
+          '',
+          'uniform vec2 iResolution;',
+          'uniform float iTime;',
+          '',
+          '#define OCTAVE_COUNT 10',
+          '',
+          'vec3 hsv2rgb(vec3 c) {',
+          '  vec3 rgb = clamp(abs(mod(c.x * 6.0 + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0, 0.0, 1.0);',
+          '  return c.z * mix(vec3(1.0), rgb, c.y);',
+          '}',
+          '',
+          'float hash11(float p) {',
+          '  p = fract(p * 0.1031);',
+          '  p *= p + 33.33;',
+          '  p *= p + p;',
+          '  return fract(p);',
+          '}',
+          '',
+          'float hash12(vec2 p) {',
+          '  vec3 p3 = fract(vec3(p.xyx) * 0.1031);',
+          '  p3 += dot(p3, p3.yzx + 33.33);',
+          '  return fract((p3.x + p3.y) * p3.z);',
+          '}',
+          '',
+          'mat2 rotate2d(float theta) {',
+          '  float c = cos(theta);',
+          '  float s = sin(theta);',
+          '  return mat2(c, -s, s, c);',
+          '}',
+          '',
+          'float noise(vec2 p) {',
+          '  vec2 ip = floor(p);',
+          '  vec2 fp = fract(p);',
+          '  float a = hash12(ip);',
+          '  float b = hash12(ip + vec2(1.0, 0.0));',
+          '  float c = hash12(ip + vec2(0.0, 1.0));',
+          '  float d = hash12(ip + vec2(1.0, 1.0));',
+          '  vec2 t = smoothstep(0.0, 1.0, fp);',
+          '  return mix(mix(a, b, t.x), mix(c, d, t.x), t.y);',
+          '}',
+          '',
+          'float fbm(vec2 p) {',
+          '  float value = 0.0;',
+          '  float amplitude = 0.5;',
+          '  for (int i = 0; i < OCTAVE_COUNT; ++i) {',
+          '    value += amplitude * noise(p);',
+          '    p *= rotate2d(0.45);',
+          '    p *= 2.0;',
+          '    amplitude *= 0.5;',
+          '  }',
+          '  return value;',
+          '}',
+          '',
+          'void main() {',
+          '  vec2 uv = gl_FragCoord.xy / iResolution.xy;',
+          '  uv = 2.0 * uv - 1.0;',
+          '  uv.x *= iResolution.x / iResolution.y;',
+          '',
+          '  // Config: hue=220, speed=1.6, intensity=0.6, size=2.0',
+          '  float speed = 1.6;',
+          '  float size = 2.0;',
+          '  float intensity = 0.6;',
+          '  float hue = 220.0;',
+          '',
+          '  uv += 2.0 * fbm(uv * size + 0.8 * iTime * speed) - 1.0;',
+          '',
+          '  float dist = abs(uv.x);',
+          '  vec3 baseColor = hsv2rgb(vec3(hue / 360.0, 0.7, 0.8));',
+          '  vec3 col = baseColor * pow(mix(0.0, 0.07, hash11(iTime * speed)) / dist, 1.0) * intensity;',
+          '  col = pow(col, vec3(1.0));',
+          '',
+          '  gl_FragColor = vec4(col, 1.0);',
+          '}'
+        ].join('\n');
+
+        function createShader(type, src) {
+          const s = gl.createShader(type);
+          gl.shaderSource(s, src);
+          gl.compileShader(s);
+          if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+            console.error('Shader compile error:', gl.getShaderInfoLog(s));
+            gl.deleteShader(s);
+            return null;
+          }
+          return s;
+        }
+
+        const vs = createShader(gl.VERTEX_SHADER, vertSrc);
+        const fs = createShader(gl.FRAGMENT_SHADER, fragSrc);
+        if (!vs || !fs) { console.error('Shader compilation failed'); return; }
+
+        const program = gl.createProgram();
+        gl.attachShader(program, vs);
+        gl.attachShader(program, fs);
+        gl.linkProgram(program);
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+          console.error('Program link error:', gl.getProgramInfoLog(program));
+          return;
+        }
+        gl.useProgram(program);
+
+        // Fullscreen quad
+        const verts = new Float32Array([-1,-1, 1,-1, -1,1, 1,1]);
+        const buf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+        gl.bufferData(gl.ARRAY_BUFFER, verts, gl.STATIC_DRAW);
+
+        const posLoc = gl.getAttribLocation(program, 'position');
+        gl.enableVertexAttribArray(posLoc);
+        gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+
+        const uRes = gl.getUniformLocation(program, 'iResolution');
+        const uTime = gl.getUniformLocation(program, 'iTime');
+
+        const start = performance.now();
+        function render() {
+          const t = (performance.now() - start) / 1000.0;
+          gl.uniform2f(uRes, canvas.width, canvas.height);
+          gl.uniform1f(uTime, t);
+          gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+          requestAnimationFrame(render);
+        }
+        render();
+        console.log('Lightning shader running');
+      }
+
+      // ─── Text Scramble (vanilla port — spaces fixed) ───
+      const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*';
+
+      function scrambleElement(el, originalText) {
+        const duration = originalText.length * 3;
+        let frame = 0;
+
+        if (!el.dataset.scrambleInit) {
+          el.innerHTML = originalText.split('').map((ch, i) =>
+            `<span class="scramble-char" data-index="${i}">${ch === ' ' ? ' ' : ch}</span>`
+          ).join('');
+          el.dataset.scrambleInit = '1';
+        }
+
+        const spans = el.querySelectorAll('.scramble-char');
+
+        const interval = setInterval(() => {
+          frame++;
+          const progress = frame / duration;
+          const revealed = Math.floor(progress * originalText.length);
+
+          spans.forEach((span, i) => {
+            const original = originalText[i];
+            if (original === ' ') {
+              span.innerHTML = '&nbsp;';
+              return;
+            }
+            if (i < revealed) {
+              span.textContent = original;
+              span.classList.remove('scrambling');
+            } else {
+              span.textContent = CHARS[Math.floor(Math.random() * CHARS.length)];
+              span.classList.add('scrambling');
+            }
+          });
+
+          if (frame >= duration) {
+            clearInterval(interval);
+            spans.forEach((span, i) => {
+              const ch = originalText[i];
+              if (ch === ' ') {
+                span.innerHTML = '&nbsp;';
+              } else {
+                span.textContent = ch;
+              }
+              span.classList.remove('scrambling');
+            });
+          }
+        }, 30);
+
+        return interval;
+      }
+
+      // ─── Cursor ───
+      function initCursor() {
+        if (state.isMobile) return;
+        const dot = document.querySelector('.cursor-dot');
+        const ring = document.querySelector('.cursor-ring');
+        let rx = 0, ry = 0;
+
+        document.addEventListener('mousemove', e => {
+          dot.style.left = e.clientX + 'px';
+          dot.style.top = e.clientY + 'px';
+        });
+
+        const hoverSel = 'a, button, label, input[type="range"], .radio-card, .pill, select, .checkbox-item';
+        document.addEventListener('mouseover', e => {
+          if (e.target.closest(hoverSel)) {
+            dot.classList.add('hovering');
+            ring.classList.add('hovering');
+          }
+        });
+        document.addEventListener('mouseout', e => {
+          if (e.target.closest(hoverSel)) {
+            dot.classList.remove('hovering');
+            ring.classList.remove('hovering');
+          }
+        });
+
+        (function tick() {
+          rx += (parseFloat(dot.style.left || 0) - rx) * 0.13;
+          ry += (parseFloat(dot.style.top || 0) - ry) * 0.13;
+          ring.style.left = rx + 'px';
+          ring.style.top = ry + 'px';
+          requestAnimationFrame(tick);
+        })();
+      }
+
+      // ─── System clock ───
+      function initClock() {
+        const el = document.getElementById('system-time');
+        function tick() {
+          const now = new Date();
+          const pad = n => String(n).padStart(2, '0');
+          el.textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+          setTimeout(tick, 1000);
+        }
+        tick();
+      }
+
+      // ─── Budget slider ───
+      function initBudget() {
+        const range = document.getElementById('budget-range');
+        const display = document.getElementById('budget-display');
+        range.addEventListener('input', () => {
+          const val = parseInt(range.value);
+          display.textContent = '$' + val.toLocaleString();
+        });
+      }
+
+      // ─── Checkboxes (JS-driven, no :has() needed) ───
+      function initCheckboxes() {
+        document.querySelectorAll('.checkbox-item').forEach(item => {
+          item.addEventListener('click', (e) => {
+            // Don't double-toggle if clicking directly on the input
+            if (e.target.tagName === 'INPUT') return;
+            const input = item.querySelector('input[type="checkbox"]');
+            if (input) {
+              input.checked = !input.checked;
+              item.classList.toggle('checked', input.checked);
+            }
+          });
+          // Also handle direct input changes
+          const input = item.querySelector('input[type="checkbox"]');
+          if (input) {
+            input.addEventListener('change', () => {
+              item.classList.toggle('checked', input.checked);
+            });
+          }
+        });
+      }
+
+      // ─── Radio card checkboxes (step 3 uses checkboxes in radio-card layout) ───
+      function initRadioCards() {
+        document.querySelectorAll('.radio-card input[type="checkbox"]').forEach(input => {
+          input.addEventListener('change', () => {
+            const card = input.closest('.radio-card');
+            const check = card.querySelector('.radio-check');
+            if (input.checked) {
+              card.querySelector('.radio-card-inner').style.borderColor = 'var(--accent-cyan)';
+              card.querySelector('.radio-card-inner').style.background = 'rgba(0,240,255,0.06)';
+              card.querySelector('.radio-card-inner').style.boxShadow = '0 0 20px rgba(0,240,255,0.1)';
+              check.style.borderColor = 'var(--accent-cyan)';
+              check.style.background = 'var(--accent-cyan)';
+              check.style.boxShadow = '0 0 8px rgba(0,240,255,0.4)';
+            } else {
+              card.querySelector('.radio-card-inner').style.borderColor = '';
+              card.querySelector('.radio-card-inner').style.background = '';
+              card.querySelector('.radio-card-inner').style.boxShadow = '';
+              check.style.borderColor = '';
+              check.style.background = '';
+              check.style.boxShadow = '';
+            }
+          });
+        });
+      }
+
+      // ─── Validation ───
+      function clearErrors() {
+        document.querySelectorAll('.field-error').forEach(e => e.classList.remove('visible'));
+        document.querySelectorAll('.field-input, .field-textarea, .field-select').forEach(e => e.classList.remove('error'));
+      }
+
+      function showError(id, fieldId) {
+        document.getElementById(id).classList.add('visible');
+        if (fieldId) document.getElementById(fieldId).classList.add('error');
+      }
+
+      function validateStep(step) {
+        clearErrors();
+        if (step === 1) {
+          const first = document.getElementById('first-name').value.trim();
+          const last = document.getElementById('last-name').value.trim();
+          const email = document.getElementById('email').value.trim();
+          const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+          let ok = true;
+          if (!first) { showError('err-first-name', 'first-name'); ok = false; }
+          if (!last) { showError('err-last-name', 'last-name'); ok = false; }
+          if (!emailOk) { showError('err-email', 'email'); ok = false; }
+          return ok;
+        }
+        if (step === 2) {
+          const biz = document.getElementById('business-name').value.trim();
+          const type = document.getElementById('business-type').value;
+          let ok = true;
+          if (!biz) { showError('err-business-name', 'business-name'); ok = false; }
+          if (!type) { showError('err-business-type', 'business-type'); ok = false; }
+          return ok;
+        }
+        if (step === 3) {
+          const checked = document.querySelectorAll('input[name="project-type"]:checked');
+          if (checked.length === 0) { showError('err-project-type', null); return false; }
+          return true;
+        }
+        if (step === 4) {
+          const goals = document.getElementById('project-goals').value.trim();
+          if (goals.length < 10) { showError('err-goals', 'project-goals'); return false; }
+          return true;
+        }
+        if (step === 5) {
+          return true; // Budget & referral are optional
+        }
+        if (step === 6) {
+          const terms = document.getElementById('terms-check').checked;
+          if (!terms) { showError('err-terms', null); return false; }
+          return true;
+        }
+        return true;
+      }
+
+      // ─── Summary Builder ───
+      function buildSummary() {
+        const container = document.getElementById('summary-content');
+        const first = document.getElementById('first-name').value.trim();
+        const last = document.getElementById('last-name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const biz = document.getElementById('business-name').value.trim();
+        const bizType = document.getElementById('business-type');
+        const bizTypeText = bizType.selectedIndex > 0 ? bizType.options[bizType.selectedIndex].text : '—';
+        const projectTypes = Array.from(document.querySelectorAll('input[name="project-type"]:checked')).map(i => i.closest('.radio-card').querySelector('.radio-card-title').textContent);
+        const goals = document.getElementById('project-goals').value.trim();
+        const timeline = document.querySelector('input[name="timeline"]:checked');
+        const budget = document.getElementById('budget-display').textContent;
+
+        const lines = [
+          `<strong>Name:</strong> <span style="color:var(--text-secondary)">${first} ${last}</span>`,
+          `<strong>Email:</strong> <span style="color:var(--text-secondary)">${email}</span>`,
+          phone ? `<strong>Phone:</strong> <span style="color:var(--text-secondary)">${phone}</span>` : '',
+          `<strong>Business:</strong> <span style="color:var(--text-secondary)">${biz} (${bizTypeText})</span>`,
+          `<strong>Project:</strong> <span style="color:var(--text-secondary)">${projectTypes.join(', ') || '—'}</span>`,
+          `<strong>Goals:</strong> <span style="color:var(--text-secondary)">${goals.substring(0, 100)}${goals.length > 100 ? '...' : ''}</span>`,
+          timeline ? `<strong>Timeline:</strong> <span style="color:var(--text-secondary)">${timeline.closest('.pill').querySelector('.pill-inner').textContent}</span>` : '',
+          `<strong>Budget:</strong> <span style="color:var(--text-secondary)">${budget}</span>`,
+        ].filter(Boolean);
+
+        container.innerHTML = lines.join('<br>');
+      }
+
+      // ─── Step Navigation ───
+      function goToStep(next, direction) {
+        const currentPanel = document.getElementById(`step-${state.currentStep}`);
+        const nextPanel = document.getElementById(`step-${next}`);
+
+        if (direction === 'back') {
+          currentPanel.style.animation = 'stepExitBack 0.35s var(--ease-out-quart) forwards';
+        } else {
+          currentPanel.classList.add('exiting');
+        }
+
+        setTimeout(() => {
+          currentPanel.classList.remove('active', 'exiting');
+          currentPanel.style.animation = '';
+
+          state.currentStep = next;
+          nextPanel.classList.add('active');
+
+          if (direction === 'back') {
+            nextPanel.style.animation = 'stepEnterBack 0.5s var(--ease-out-expo) forwards';
+          }
+
+          setTimeout(() => {
+            nextPanel.style.animation = '';
+          }, 500);
+
+          updateProgress();
+          updateNav();
+
+          // Build summary on final step
+          if (next === TOTAL_STEPS) buildSummary();
+
+          // Scramble title
+          const newTitle = document.querySelector(`#step-${next} .step-title`);
+          if (newTitle) {
+            const text = newTitle.textContent.trim();
+            setTimeout(() => scrambleElement(newTitle, text), 150);
+          }
+        }, 350);
+      }
+
+      function updateProgress() {
+        const fill = document.getElementById('progress-fill');
+        const counter = document.getElementById('step-counter');
+        const dots = document.querySelectorAll('.step-dot');
+        const pct = (state.currentStep / TOTAL_STEPS) * 100;
+
+        fill.style.width = pct + '%';
+        counter.textContent = `STEP ${String(state.currentStep).padStart(2,'0')} / ${String(TOTAL_STEPS).padStart(2,'0')}`;
+
+        dots.forEach((dot, i) => {
+          dot.classList.remove('active', 'done');
+          if (i + 1 === state.currentStep) dot.classList.add('active');
+          if (i + 1 < state.currentStep) dot.classList.add('done');
+        });
+      }
+
+      function updateNav() {
+        const backBtn = document.getElementById('btn-back');
+        const nextLabel = document.getElementById('btn-next-text');
+        backBtn.classList.toggle('hidden', state.currentStep === 1);
+        nextLabel.textContent = state.currentStep === TOTAL_STEPS ? 'Submit' : 'Continue';
+      }
+
+      // ─── Burst Animation ───
+      // Mini confetti burst from a specific element
+      function miniConfetti(el) {
+        const rect = el.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const colors = ['#00f0ff', '#8b5cf6', '#d946ef', '#10b981', '#ffffff'];
+        for (let i = 0; i < 16; i++) {
+          const p = document.createElement('div');
+          p.className = 'burst-particle';
+          const angle = (i / 16) * Math.PI * 2 + (Math.random() - 0.5) * 0.5;
+          const speed = Math.random() * 80 + 40;
+          const dx = Math.cos(angle) * speed;
+          const dy = Math.sin(angle) * speed;
+          const size = Math.random() * 4 + 2;
+          p.style.cssText = `
+            left: ${cx}px; top: ${cy}px;
+            width: ${size}px; height: ${size}px;
+            background: ${colors[Math.floor(Math.random() * colors.length)]};
+            box-shadow: 0 0 6px currentColor;
+          `;
+          document.body.appendChild(p);
+          p.animate([
+            { transform: 'translate(-50%,-50%) scale(1)', opacity: 1 },
+            { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(0)`, opacity: 0 }
+          ], { duration: 500 + Math.random() * 300, easing: 'cubic-bezier(0.25,1,0.5,1)' })
+            .addEventListener('finish', () => p.remove());
+        }
+      }
+
+      // Big confetti burst (success screen)
+      function burstParticles() {
+        const colors = ['#00f0ff', '#8b5cf6', '#d946ef', '#10b981', '#ffffff'];
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
+        for (let i = 0; i < 40; i++) {
+          const p = document.createElement('div');
+          p.className = 'burst-particle';
+          const angle = (i / 40) * Math.PI * 2;
+          const speed = Math.random() * 200 + 80;
+          const dx = Math.cos(angle) * speed;
+          const dy = Math.sin(angle) * speed;
+          const size = Math.random() * 5 + 3;
+          p.style.cssText = `
+            left: ${cx}px; top: ${cy}px;
+            width: ${size}px; height: ${size}px;
+            background: ${colors[Math.floor(Math.random() * colors.length)]};
+            box-shadow: 0 0 6px currentColor;
+          `;
+          document.body.appendChild(p);
+          p.animate([
+            { transform: 'translate(-50%,-50%) scale(1)', opacity: 1 },
+            { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(0)`, opacity: 0 }
+          ], { duration: 800 + Math.random() * 400, easing: 'cubic-bezier(0.25,1,0.5,1)' })
+            .addEventListener('finish', () => p.remove());
+        }
+      }
+
+      // ─── Submit ───
+      const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4mK9b4esiVT0saLBZpZItVRKy_6r4C6WBq-TdcdEHr2yx5Sd62120bi2KNTaf58At/exec';
+
+      function handleSubmit() {
+        if (!validateStep(TOTAL_STEPS)) return;
+
+        const submitBtn = document.getElementById('btn-next');
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.7';
+
+        const label = document.getElementById('btn-next-text');
+        let dots = 0;
+        const transmitting = setInterval(() => {
+          dots = (dots + 1) % 4;
+          label.textContent = 'Submitting' + '.'.repeat(dots);
+        }, 300);
+
+        // Collect all form data
+        const projectTypes = Array.from(document.querySelectorAll('input[name="project-type"]:checked'))
+          .map(i => i.closest('.radio-card').querySelector('.radio-card-title').textContent);
+        const timelineEl = document.querySelector('input[name="timeline"]:checked');
+        const budgetEl = document.getElementById('budget');
+
+        const payload = {
+          firstName: document.getElementById('first-name').value.trim(),
+          lastName: document.getElementById('last-name').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          phone: document.getElementById('phone').value.trim(),
+          businessName: document.getElementById('business-name').value.trim(),
+          businessType: document.getElementById('business-type').value,
+          currentWebsite: document.getElementById('website-current').value.trim(),
+          projectTypes: projectTypes.join(', '),
+          projectGoals: document.getElementById('project-goals').value.trim(),
+          inspiration: document.getElementById('inspiration').value.trim(),
+          timeline: timelineEl ? timelineEl.value : '',
+          budget: budgetEl ? budgetEl.value : '',
+          referral: document.getElementById('referral').value,
+          additional: document.getElementById('additional').value.trim(),
+        };
+
+        fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        }).then(() => {
+          clearInterval(transmitting);
+          submitBtn.disabled = false;
+          submitBtn.style.opacity = '';
+
+          document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+          document.getElementById('step-nav').style.display = 'none';
+          document.getElementById('progress-header').style.opacity = '0';
+          document.getElementById('success-screen').classList.add('active');
+
+          const id = 'NXS-' + Math.random().toString(36).substr(2,6).toUpperCase();
+          document.getElementById('submission-id').textContent = id;
+
+          burstParticles();
+        }).catch((err) => {
+          clearInterval(transmitting);
+          label.textContent = 'Submit';
+          submitBtn.disabled = false;
+          submitBtn.style.opacity = '';
+          console.error('Submission failed:', err);
+          alert('Something went wrong. Please try again.');
+        });
+      }
+
+      // ─── Button Events ───
+      function initButtons() {
+        const nextBtn = document.getElementById('btn-next');
+        nextBtn.addEventListener('click', () => {
+          if (state.currentStep < TOTAL_STEPS) {
+            if (validateStep(state.currentStep)) {
+              miniConfetti(nextBtn);
+              goToStep(state.currentStep + 1, 'forward');
+            }
+          } else {
+            handleSubmit();
+          }
+        });
+
+        document.getElementById('btn-back').addEventListener('click', () => {
+          if (state.currentStep > 1) {
+            goToStep(state.currentStep - 1, 'back');
+          }
+        });
+      }
+
+      // ─── Entrance Animation ───
+      function animateEntrance() {
+        const header = document.getElementById('progress-header');
+        const card = document.getElementById('form-card');
+
+        setTimeout(() => { header.classList.add('visible'); }, 200);
+        setTimeout(() => { card.classList.add('visible'); }, 400);
+
+        setTimeout(() => {
+          const title = document.querySelector('#step-1 .step-title');
+          if (title) scrambleElement(title, title.textContent.trim());
+        }, 700);
+      }
+
+      // ─── Init ───
+      function init() {
+        initLightning();
+        initCursor();
+        initClock();
+        initBudget();
+        initCheckboxes();
+        initRadioCards();
+        initButtons();
+        animateEntrance();
+      }
+
+      document.addEventListener('DOMContentLoaded', init);
+    })();
+  </script>
+</body>
+</html>

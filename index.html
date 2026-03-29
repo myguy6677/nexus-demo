@@ -3,22 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEXUS — AI Research & Innovation</title>
+  <title>NEXUS — AI-Powered Web Design & Development</title>
+  <meta name="description" content="NEXUS builds stunning, high-performance websites with clean animations for local businesses. Landing pages, full websites, and redesigns starting at $400.">
+  <meta name="keywords" content="web design, web development, AI websites, clean animations, local business websites, landing pages">
+  <meta name="author" content="NEXUS">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://nexus-ai.dev/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="NEXUS — AI-Powered Web Design & Development">
+  <meta property="og:description" content="Stunning, high-performance websites with clean animations for local businesses. Starting at $400.">
+  <meta property="og:url" content="https://nexus-ai.dev/">
+  <meta property="og:site_name" content="NEXUS">
+  <meta property="og:image" content="https://nexus-ai.dev/og-image.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="NEXUS — AI-Powered Web Design & Development">
+  <meta name="twitter:description" content="Stunning, high-performance websites with clean animations for local businesses.">
+  <meta name="twitter:image" content="https://nexus-ai.dev/og-image.png">
+
   <link rel="stylesheet" href="css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Preloader -->
+  <!-- Skip to Content (Accessibility) -->
+  <a href="#hero" class="skip-link">Skip to main content</a>
+
+  <!-- Preloader — Skeleton -->
   <div id="preloader">
-    <div class="preloader-inner">
-      <div class="preloader-ring"></div>
-      <div class="preloader-ring"></div>
-      <div class="preloader-ring"></div>
-      <div class="preloader-text" data-text="NEXUS">NEXUS</div>
-      <div class="preloader-sub">INITIALIZING SYSTEMS</div>
-      <div class="preloader-progress">
-        <div class="preloader-progress-bar"></div>
+    <div class="skeleton-layout">
+      <!-- Fake navbar -->
+      <div class="skeleton-nav">
+        <div class="skeleton-bone" style="width: 100px; height: 16px;"></div>
+        <div class="skeleton-nav-links">
+          <div class="skeleton-bone" style="width: 60px; height: 12px;"></div>
+          <div class="skeleton-bone" style="width: 70px; height: 12px;"></div>
+          <div class="skeleton-bone" style="width: 55px; height: 12px;"></div>
+          <div class="skeleton-bone" style="width: 65px; height: 12px;"></div>
+        </div>
+      </div>
+      <!-- Fake hero -->
+      <div class="skeleton-hero">
+        <div class="skeleton-bone" style="width: 140px; height: 14px; margin-bottom: 24px;"></div>
+        <div class="skeleton-bone" style="width: 80%; max-width: 500px; height: 48px; margin-bottom: 12px;"></div>
+        <div class="skeleton-bone" style="width: 65%; max-width: 400px; height: 48px; margin-bottom: 12px;"></div>
+        <div class="skeleton-bone" style="width: 90%; max-width: 450px; height: 16px; margin-bottom: 8px; margin-top: 24px;"></div>
+        <div class="skeleton-bone" style="width: 70%; max-width: 350px; height: 16px; margin-bottom: 32px;"></div>
+        <div class="skeleton-hero-btns">
+          <div class="skeleton-bone" style="width: 160px; height: 48px; border-radius: 8px;"></div>
+          <div class="skeleton-bone" style="width: 140px; height: 48px; border-radius: 8px;"></div>
+        </div>
+      </div>
+      <!-- Loading text -->
+      <div class="skeleton-status">
+        <div class="preloader-progress">
+          <div class="preloader-progress-bar"></div>
+        </div>
+        <div class="skeleton-status-text">NEXUS</div>
       </div>
     </div>
   </div>
@@ -35,7 +79,7 @@
   <div class="scroll-progress"><div class="scroll-progress-bar"></div></div>
 
   <!-- Navigation -->
-  <nav id="navbar">
+  <nav id="navbar" role="navigation" aria-label="Main navigation">
     <a href="#hero" class="nav-logo">
       <span class="logo-bracket">[</span>
       <span class="logo-text">NXS</span>
@@ -50,22 +94,27 @@
         <span class="nav-link-text">About</span>
         <span class="nav-link-line"></span>
       </a>
-      <a href="#technology" class="nav-link" data-section="technology">
-        <span class="nav-link-text">Technology</span>
-        <span class="nav-link-line"></span>
-      </a>
       <a href="#projects" class="nav-link" data-section="projects">
-        <span class="nav-link-text">Projects</span>
+        <span class="nav-link-text">Work</span>
         <span class="nav-link-line"></span>
       </a>
-      <a href="#lab" class="nav-link" data-section="lab">
-        <span class="nav-link-text">Lab</span>
+      <a href="#pricing" class="nav-link" data-section="pricing">
+        <span class="nav-link-text">Pricing</span>
+        <span class="nav-link-line"></span>
+      </a>
+      <a href="#faq" class="nav-link" data-section="faq">
+        <span class="nav-link-text">FAQ</span>
         <span class="nav-link-line"></span>
       </a>
       <a href="#contact" class="nav-link" data-section="contact">
         <span class="nav-link-text">Contact</span>
         <span class="nav-link-line"></span>
       </a>
+      <!-- Dark Mode Toggle -->
+      <button class="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle theme">
+        <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </button>
     </div>
     <button class="nav-toggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
@@ -78,15 +127,16 @@
     <div class="mobile-menu-links">
       <a href="#hero" class="mobile-link" data-section="hero">Home</a>
       <a href="#about" class="mobile-link" data-section="about">About</a>
-      <a href="#technology" class="mobile-link" data-section="technology">Technology</a>
-      <a href="#projects" class="mobile-link" data-section="projects">Projects</a>
-      <a href="#lab" class="mobile-link" data-section="lab">Lab</a>
+      <a href="#projects" class="mobile-link" data-section="projects">Work</a>
+      <a href="#pricing" class="mobile-link" data-section="pricing">Pricing</a>
+      <a href="#faq" class="mobile-link" data-section="faq">FAQ</a>
+      <a href="#blog" class="mobile-link" data-section="blog">Blog</a>
       <a href="#contact" class="mobile-link" data-section="contact">Contact</a>
     </div>
   </div>
 
   <!-- Main Content -->
-  <main>
+  <main role="main" id="main-content">
     <!-- ===== HERO SECTION ===== -->
     <section id="hero" class="section">
       <div class="hero-content">
@@ -97,7 +147,6 @@
         <h1 class="hero-title">
           <span class="title-line"><span class="title-word" data-glitch="BUILDING">BUILDING</span></span>
           <span class="title-line"><span class="title-word" data-glitch="THE FUTURE">THE FUTURE</span></span>
-          <span class="title-line accent"><span class="title-word" data-glitch="OF INTELLIGENCE">OF INTELLIGENCE</span></span>
         </h1>
         <p class="hero-description">
           We pioneer the intersection of artificial intelligence and human potential.
@@ -112,6 +161,10 @@
           <a href="#lab" class="btn btn-outline magnetic">
             <span class="btn-text">Enter The Lab</span>
             <span class="btn-icon">&loz;</span>
+          </a>
+          <a href="form.html" class="btn btn-submit magnetic">
+            <span class="btn-text">Submit a Proposal</span>
+            <span class="btn-icon">&#x25C6;</span>
           </a>
         </div>
         <div class="hero-stats">
@@ -237,11 +290,88 @@
       </div>
     </section>
 
+    <!-- ===== PROCESS SECTION (Scroll-Driven Storytelling) ===== -->
+    <section id="process" class="section">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-number">02</span>
+          <h2 class="section-title split-text">Our Process</h2>
+          <div class="section-line"></div>
+        </div>
+        <p class="process-subtitle reveal-text">From first conversation to launch — here's how we bring your vision to life.</p>
+        <div class="process-timeline">
+          <div class="process-track">
+            <div class="process-progress-line"></div>
+          </div>
+          <div class="process-step reveal-up" data-step="1">
+            <div class="process-step-marker">
+              <span class="process-step-number">01</span>
+              <div class="process-step-dot"></div>
+            </div>
+            <div class="process-step-content">
+              <div class="process-step-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                </svg>
+              </div>
+              <h3>Discovery</h3>
+              <p>We learn about your business, goals, and audience. You tell us what you need — we figure out how to make it shine.</p>
+            </div>
+          </div>
+          <div class="process-step reveal-up" data-step="2">
+            <div class="process-step-marker">
+              <span class="process-step-number">02</span>
+              <div class="process-step-dot"></div>
+            </div>
+            <div class="process-step-content">
+              <div class="process-step-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+                </svg>
+              </div>
+              <h3>Design</h3>
+              <p>We craft a modern, polished design with smooth animations that makes your brand look premium and professional.</p>
+            </div>
+          </div>
+          <div class="process-step reveal-up" data-step="3">
+            <div class="process-step-marker">
+              <span class="process-step-number">03</span>
+              <div class="process-step-dot"></div>
+            </div>
+            <div class="process-step-content">
+              <div class="process-step-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+                </svg>
+              </div>
+              <h3>Build</h3>
+              <p>Using AI-assisted development, we build your site fast — clean code, optimized performance, pixel-perfect on every device.</p>
+            </div>
+          </div>
+          <div class="process-step reveal-up" data-step="4">
+            <div class="process-step-marker">
+              <span class="process-step-number">04</span>
+              <div class="process-step-dot"></div>
+            </div>
+            <div class="process-step-content">
+              <div class="process-step-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+              </div>
+              <h3>Launch</h3>
+              <p>We deploy to Cloudflare, set up your domain, and make sure everything is live, fast, and ready for customers.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== TECHNOLOGY SECTION ===== -->
     <section id="technology" class="section">
       <div class="section-container">
         <div class="section-header">
-          <span class="section-number">02</span>
+          <span class="section-number">03</span>
           <h2 class="section-title split-text">Technology</h2>
           <div class="section-line"></div>
         </div>
@@ -365,7 +495,7 @@
     <section id="projects" class="section">
       <div class="section-container">
         <div class="section-header">
-          <span class="section-number">03</span>
+          <span class="section-number">04</span>
           <h2 class="section-title split-text">Projects</h2>
           <div class="section-line"></div>
         </div>
@@ -458,55 +588,575 @@
       </div>
     </section>
 
+    <!-- ===== WHO THIS IS FOR ===== -->
+    <section id="industries" class="section">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-number">05</span>
+          <h2 class="section-title split-text">Who This Is For</h2>
+          <div class="section-line"></div>
+        </div>
+        <p class="industries-subtitle reveal-text">We build websites for local businesses that want to stand out online.</p>
+        <div class="industries-grid">
+          <div class="industry-card reveal-up">
+            <div class="industry-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>
+            </div>
+            <h3>Restaurants & Cafes</h3>
+            <p>Online menus, ordering integrations, and ambiance that matches your brand.</p>
+          </div>
+          <div class="industry-card reveal-up">
+            <div class="industry-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <h3>Real Estate</h3>
+            <p>Property showcases, virtual tours, and lead capture that converts visitors into clients.</p>
+          </div>
+          <div class="industry-card reveal-up">
+            <div class="industry-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+            <h3>Contractors & Trades</h3>
+            <p>Portfolio galleries, service areas, and quote request forms that bring in jobs.</p>
+          </div>
+          <div class="industry-card reveal-up">
+            <div class="industry-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
+            </div>
+            <h3>Beauty & Wellness</h3>
+            <p>Booking integrations, service menus, and elegant design that reflects your space.</p>
+          </div>
+          <div class="industry-card reveal-up">
+            <div class="industry-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.24 12.24a6 6 0 00-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+            </div>
+            <h3>Creative Agencies</h3>
+            <p>Portfolio-first design with bold animations that showcase your best work.</p>
+          </div>
+          <div class="industry-card reveal-up">
+            <div class="industry-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+            </div>
+            <h3>Fitness & Gyms</h3>
+            <p>Class schedules, membership info, and high-energy design that gets people through the door.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== LAB SECTION ===== -->
     <section id="lab" class="section">
       <div class="section-container">
         <div class="section-header">
-          <span class="section-number">04</span>
+          <span class="section-number">06</span>
           <h2 class="section-title split-text">The Lab</h2>
           <div class="section-line"></div>
         </div>
         <div class="lab-description reveal-text">
-          <p>Interactive experiments and demonstrations of our latest research. Move your mouse (or touch) to interact.</p>
+          <p>Interactive experiments — click, drag, and play. See what our tech can do.</p>
         </div>
         <div class="lab-grid">
-          <div class="lab-experiment" id="neural-viz">
-            <h3>Neural Network Visualizer</h3>
-            <canvas id="neural-canvas"></canvas>
+          <div class="lab-experiment" id="gravity-viz">
+            <h3>Particle Gravity</h3>
+            <canvas id="gravity-canvas"></canvas>
             <div class="lab-controls">
-              <button class="lab-btn" data-action="add-node">+ Node</button>
-              <button class="lab-btn" data-action="remove-node">- Node</button>
-              <button class="lab-btn" data-action="pulse">Pulse</button>
-              <button class="lab-btn" data-action="reset-neural">Reset</button>
+              <button class="lab-btn" data-action="gravity-burst">Burst</button>
+              <button class="lab-btn" data-action="gravity-clear">Clear Wells</button>
+              <button class="lab-btn" data-action="gravity-reset">Reset</button>
+            </div>
+            <p class="lab-hint">Click canvas to place gravity wells</p>
+          </div>
+          <div class="lab-experiment" id="reaction-viz">
+            <h3>Reaction Time</h3>
+            <div id="reaction-box" class="reaction-box">
+              <div class="reaction-content">
+                <span class="reaction-message">Click to Start</span>
+                <span class="reaction-time"></span>
+              </div>
+            </div>
+            <div class="lab-controls">
+              <div class="reaction-scores">
+                <span class="reaction-best">Best: —</span>
+                <span class="reaction-avg">Avg: —</span>
+              </div>
             </div>
           </div>
-          <div class="lab-experiment" id="waveform-viz">
-            <h3>Signal Processing</h3>
-            <canvas id="wave-canvas"></canvas>
+          <div class="lab-experiment" id="draw-viz">
+            <h3>Neon Draw</h3>
+            <canvas id="draw-canvas"></canvas>
             <div class="lab-controls">
-              <label class="lab-slider">
-                <span>Frequency</span>
-                <input type="range" min="1" max="20" value="5" id="wave-freq">
-              </label>
-              <label class="lab-slider">
-                <span>Amplitude</span>
-                <input type="range" min="10" max="100" value="50" id="wave-amp">
-              </label>
-              <label class="lab-slider">
-                <span>Noise</span>
-                <input type="range" min="0" max="50" value="0" id="wave-noise">
-              </label>
+              <button class="lab-btn lab-color-btn active" data-color="#00f0ff" style="--btn-color: #00f0ff">Cyan</button>
+              <button class="lab-btn lab-color-btn" data-color="#8b5cf6" style="--btn-color: #8b5cf6">Purple</button>
+              <button class="lab-btn lab-color-btn" data-color="#d946ef" style="--btn-color: #d946ef">Pink</button>
+              <button class="lab-btn" data-action="draw-clear">Clear</button>
             </div>
           </div>
-          <div class="lab-experiment" id="matrix-viz">
-            <h3>Data Matrix</h3>
-            <canvas id="matrix-canvas"></canvas>
-            <div class="lab-controls">
-              <button class="lab-btn active" data-action="matrix-rain">Rain</button>
-              <button class="lab-btn" data-action="matrix-grid">Grid</button>
-              <button class="lab-btn" data-action="matrix-spiral">Spiral</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== RESULTS / METRICS SECTION ===== -->
+    <section id="results" class="section">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-number">07</span>
+          <h2 class="section-title split-text">Built Different</h2>
+          <div class="section-line"></div>
+        </div>
+        <p class="results-subtitle reveal-text">Every site we build is optimized for speed, conversions, and search engines.</p>
+        <div class="results-grid">
+          <div class="result-card reveal-up">
+            <div class="result-value"><span class="result-counter" data-target="100" data-suffix="%">0</span></div>
+            <div class="result-label">Mobile Responsive</div>
+            <p class="result-desc">Pixel-perfect on every device, every screen size.</p>
+          </div>
+          <div class="result-card reveal-up">
+            <div class="result-value"><span class="result-counter" data-target="95" data-suffix="+">0</span></div>
+            <div class="result-label">PageSpeed Score</div>
+            <p class="result-desc">Blazing fast load times that keep visitors engaged.</p>
+          </div>
+          <div class="result-card reveal-up">
+            <div class="result-value"><span class="result-counter" data-target="48" data-suffix="hr">0</span></div>
+            <div class="result-label">Response Time</div>
+            <p class="result-desc">Every inquiry gets a response within 48 hours.</p>
+          </div>
+          <div class="result-card reveal-up">
+            <div class="result-value"><span class="result-counter" data-target="0" data-suffix="" data-text="SEO">SEO</span></div>
+            <div class="result-label">Optimized</div>
+            <p class="result-desc">Built-in SEO so customers find you on Google.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS SECTION ===== -->
+    <section id="testimonials" class="section">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-number">08</span>
+          <h2 class="section-title split-text">What Clients Say</h2>
+          <div class="section-line"></div>
+        </div>
+        <p class="testimonials-subtitle reveal-text">See what our partners have to say about working with us.</p>
+        <div class="testimonials-columns">
+          <!-- Column 1 -->
+          <div class="testimonials-column" data-speed="15">
+            <div class="testimonials-scroll">
+              <div class="testimonial-card">
+                <p class="testimonial-text">"NEXUS completely transformed our online presence. The attention to detail in every animation and interaction was beyond what we imagined."</p>
+                <div class="testimonial-author">
+                  <img src="https://randomuser.me/api/portraits/women/1.jpg" alt="Sarah Chen" class="testimonial-avatar">
+                  <div>
+                    <div class="testimonial-name">Sarah Chen</div>
+                    <div class="testimonial-role">CEO, Luminary Labs</div>
+                  </div>
+                </div>
+              </div>
+              <div class="testimonial-card">
+                <p class="testimonial-text">"The team delivered a solution that exceeded expectations. Our conversion rate increased by 40% within the first month."</p>
+                <div class="testimonial-author">
+                  <img src="https://randomuser.me/api/portraits/men/2.jpg" alt="Marcus Rivera" class="testimonial-avatar">
+                  <div>
+                    <div class="testimonial-name">Marcus Rivera</div>
+                    <div class="testimonial-role">Founder, Café Solstice</div>
+                  </div>
+                </div>
+              </div>
+              <div class="testimonial-card">
+                <p class="testimonial-text">"Smooth implementation, stunning design. They understood our brand instantly and built something we're proud to show off."</p>
+                <div class="testimonial-author">
+                  <img src="https://randomuser.me/api/portraits/women/3.jpg" alt="Priya Patel" class="testimonial-avatar">
+                  <div>
+                    <div class="testimonial-name">Priya Patel</div>
+                    <div class="testimonial-role">Marketing Director, Helix</div>
+                  </div>
+                </div>
+              </div>
+              <div class="testimonial-card">
+                <p class="testimonial-text">"I had no idea a website could feel this polished. Every scroll, every hover — it all feels intentional. Truly next-level craftsmanship."</p>
+                <div class="testimonial-author">
+                  <img src="https://randomuser.me/api/portraits/men/11.jpg" alt="Ryan Nakamura" class="testimonial-avatar">
+                  <div>
+                    <div class="testimonial-name">Ryan Nakamura</div>
+                    <div class="testimonial-role">Founder, Drift Studios</div>
+                  </div>
+                </div>
+              </div>
+              <div class="testimonial-card">
+                <p class="testimonial-text">"We went from an embarrassing Wix site to something that makes clients think we're a Fortune 500. Insane value for the price."</p>
+                <div class="testimonial-author">
+                  <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Jasmine Lee" class="testimonial-avatar">
+                  <div>
+                    <div class="testimonial-name">Jasmine Lee</div>
+                    <div class="testimonial-role">Owner, Jade Wellness</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+          <!-- Column 2 -->
+          <div class="testimonials-column" data-speed="19">
+            <div class="testimonials-scroll">
+              <div class="testimonial-card">
+                <p class="testimonial-text">"From concept to launch in under two weeks. The site performs flawlessly and looks incredible on every device."</p>
+                <div class="testimonial-author">
+                  <img src="https://randomuser.me/api/portraits/men/4.jpg" alt="James Okoro" class="testimonial-avatar">
+                  <div>
+                    <div class="testimonial-name">James Okoro</div>
+                    <div class="testimonial-role">Owner, Grind Coffee Co.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="testimonial-card">
+                <p class="testimonial-text">"The animations and micro-interactions made our product page feel premium. Customers constantly comment on how smooth our site is."</p>
+                <div class="testimonial-author">
+                  <img src="https://randomuser.me/api/portraits/women/5.jpg" alt="Elena Vasquez" class="testimonial-avatar">
+                  <div>
+                    <div class="testimonial-name">Elena Vasquez</div>
+                    <div class="testimonial-role">COO, Meridian Studio</div>
+                  </div>
+                </div>
+              </div>
+              <div class="testimonial-card">
+                <p class="testimonial-text">"Professional, responsive, and incredibly talented. They took our outdated site and turned it into something modern and fast."</p>
+                <div class="testimonial-author">
+                  <img src="https://randomuser.me/api/portraits/men/7.jpg" alt="David Park" class="testimonial-avatar">
+                  <div>
+                    <div class="testimonial-name">David Park</div>
+                    <div class="testimonial-role">CTO, Baseline Analytics</div>
+                  </div>
+                </div>
+              </div>
+              <div class="testimonial-card">
+                <p class="testimonial-text">"Our old agency charged us 5x more and delivered half the quality. These guys are the real deal — fast, affordable, and pixel-perfect."</p>
+                <div class="testimonial-author">
+                  <img src="https://randomuser.me/api/portraits/men/15.jpg" alt="Carlos Mendez" class="testimonial-avatar">
+                  <div>
+                    <div class="testimonial-name">Carlos Mendez</div>
+                    <div class="testimonial-role">CEO, Vantage Realty</div>
+                  </div>
+                </div>
+              </div>
+              <div class="testimonial-card">
+                <p class="testimonial-text">"The contact form alone has brought in 30+ leads since launch. The whole site just works — and looks amazing doing it."</p>
+                <div class="testimonial-author">
+                  <img src="https://randomuser.me/api/portraits/women/16.jpg" alt="Maya Thompson" class="testimonial-avatar">
+                  <div>
+                    <div class="testimonial-name">Maya Thompson</div>
+                    <div class="testimonial-role">Owner, Roots & Greens</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Column 3 -->
+          <div class="testimonials-column" data-speed="17">
+            <div class="testimonials-scroll">
+              <div class="testimonial-card">
+                <p class="testimonial-text">"We needed a landing page that converts — they delivered exactly that. Clean, fast, and beautifully animated."</p>
+                <div class="testimonial-author">
+                  <img src="https://randomuser.me/api/portraits/women/8.jpg" alt="Aisha Rahman" class="testimonial-avatar">
+                  <div>
+                    <div class="testimonial-name">Aisha Rahman</div>
+                    <div class="testimonial-role">Founder, Bloom Bakery</div>
+                  </div>
+                </div>
+              </div>
+              <div class="testimonial-card">
+                <p class="testimonial-text">"Outstanding work. The website they built has become our strongest sales tool. Worth every penny."</p>
+                <div class="testimonial-author">
+                  <img src="https://randomuser.me/api/portraits/men/9.jpg" alt="Liam Foster" class="testimonial-avatar">
+                  <div>
+                    <div class="testimonial-name">Liam Foster</div>
+                    <div class="testimonial-role">Director, Apex Fitness</div>
+                  </div>
+                </div>
+              </div>
+              <div class="testimonial-card">
+                <p class="testimonial-text">"They didn't just build a website — they built an experience. Our bounce rate dropped 60% after launch."</p>
+                <div class="testimonial-author">
+                  <img src="https://randomuser.me/api/portraits/women/6.jpg" alt="Nina Torres" class="testimonial-avatar">
+                  <div>
+                    <div class="testimonial-name">Nina Torres</div>
+                    <div class="testimonial-role">VP Marketing, Crestline</div>
+                  </div>
+                </div>
+              </div>
+              <div class="testimonial-card">
+                <p class="testimonial-text">"Absolutely blown away. The 3D effects and scroll animations make our competitors look like they're stuck in 2010."</p>
+                <div class="testimonial-author">
+                  <img src="https://randomuser.me/api/portraits/men/18.jpg" alt="Derek Walsh" class="testimonial-avatar">
+                  <div>
+                    <div class="testimonial-name">Derek Walsh</div>
+                    <div class="testimonial-role">Founder, Ironclad Gym</div>
+                  </div>
+                </div>
+              </div>
+              <div class="testimonial-card">
+                <p class="testimonial-text">"From the first mockup to the final deployment, everything was seamless. Communication was top-notch the entire way."</p>
+                <div class="testimonial-author">
+                  <img src="https://randomuser.me/api/portraits/women/19.jpg" alt="Sofia Reyes" class="testimonial-avatar">
+                  <div>
+                    <div class="testimonial-name">Sofia Reyes</div>
+                    <div class="testimonial-role">Director, Luna Creative</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PRICING SECTION ===== -->
+    <section id="pricing" class="section">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-number">09</span>
+          <h2 class="section-title split-text">Pricing</h2>
+          <div class="section-line"></div>
+        </div>
+        <p class="pricing-subtitle reveal-text">Transparent pricing. No hidden fees. Choose what fits your project.</p>
+        <div class="pricing-grid">
+          <!-- Landing Page -->
+          <div class="pricing-card reveal-up" data-tier="starter">
+            <div class="pricing-card-inner">
+              <h3 class="pricing-tier-name">Landing Page</h3>
+              <p class="pricing-tier-desc">Single-page site to capture leads and showcase your business.</p>
+              <div class="pricing-amount">
+                <span class="pricing-currency">$</span>
+                <span class="pricing-value">400</span>
+              </div>
+              <span class="pricing-period-label">one-time</span>
+              <ul class="pricing-features">
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  Responsive design
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  Polished animations
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  Contact form
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  SEO basics
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  Cloudflare hosting setup
+                </li>
+              </ul>
+              <a href="form.html" class="pricing-cta magnetic">Get Started</a>
+            </div>
+            <div class="pricing-card-glow"></div>
+          </div>
+          <!-- Full Website -->
+          <div class="pricing-card featured reveal-up" data-tier="pro">
+            <div class="pricing-badge">Most Popular</div>
+            <div class="pricing-card-inner">
+              <h3 class="pricing-tier-name">Full Website</h3>
+              <p class="pricing-tier-desc">Complete multi-page site with advanced interactions and animations.</p>
+              <div class="pricing-amount">
+                <span class="pricing-currency">$</span>
+                <span class="pricing-value">1,000</span>
+              </div>
+              <span class="pricing-period-label">one-time</span>
+              <ul class="pricing-features">
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  Up to 5 pages
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  Custom animations & effects
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  CMS / content management
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  Performance optimized
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  Cloudflare hosting + DNS
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  2 rounds of revisions
+                </li>
+              </ul>
+              <a href="form.html" class="pricing-cta featured magnetic">Get Started</a>
+            </div>
+            <div class="pricing-card-glow"></div>
+          </div>
+          <!-- Enterprise -->
+          <div class="pricing-card reveal-up" data-tier="enterprise">
+            <div class="pricing-card-inner">
+              <h3 class="pricing-tier-name">Enterprise</h3>
+              <p class="pricing-tier-desc">Large-scale web platform with full branding, strategy, and ongoing support.</p>
+              <div class="pricing-amount">
+                <span class="pricing-currency">$</span>
+                <span class="pricing-value">2,500</span>
+              </div>
+              <span class="pricing-period-label">starting at</span>
+              <ul class="pricing-features">
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  Up to 15 pages
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  Brand identity & style guide
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  Premium animations & 3D effects
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  SEO strategy & analytics setup
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  Dedicated project manager
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  CMS + admin dashboard
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  30 days post-launch support
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  Unlimited revisions
+                </li>
+              </ul>
+              <a href="form.html" class="pricing-cta magnetic">Get Started</a>
+            </div>
+            <div class="pricing-card-glow"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FAQ SECTION ===== -->
+    <section id="faq" class="section">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-number">10</span>
+          <h2 class="section-title split-text">FAQ</h2>
+          <div class="section-line"></div>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item reveal-up">
+            <button class="faq-question" aria-expanded="false">
+              <span>How long does it take to build a website?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer" role="region">
+              <p>Most landing pages are done in 1-2 weeks. Full websites take 2-4 weeks depending on the scope. We'll give you a clear timeline before we start.</p>
+            </div>
+          </div>
+          <div class="faq-item reveal-up">
+            <button class="faq-question" aria-expanded="false">
+              <span>What's included in the price?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer" role="region">
+              <p>Design, development, animations, responsive layout, SEO basics, contact form, and Cloudflare hosting setup. No hidden fees.</p>
+            </div>
+          </div>
+          <div class="faq-item reveal-up">
+            <button class="faq-question" aria-expanded="false">
+              <span>Can I update the site myself after launch?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer" role="region">
+              <p>Yes. For full website packages, we set up a simple content management system so you can edit text, images, and menus without touching code.</p>
+            </div>
+          </div>
+          <div class="faq-item reveal-up">
+            <button class="faq-question" aria-expanded="false">
+              <span>Do you offer payment plans?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer" role="region">
+              <p>Absolutely. We're open to monthly payment arrangements that work for your budget. Let's talk about what fits.</p>
+            </div>
+          </div>
+          <div class="faq-item reveal-up">
+            <button class="faq-question" aria-expanded="false">
+              <span>What if I'm not happy with the design?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer" role="region">
+              <p>Every package includes revision rounds. We work closely with you throughout the process, so the final result is exactly what you envisioned.</p>
+            </div>
+          </div>
+          <div class="faq-item reveal-up">
+            <button class="faq-question" aria-expanded="false">
+              <span>Do you handle hosting and domains?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer" role="region">
+              <p>Yes. We deploy through Cloudflare for fast, reliable hosting and can help you set up or transfer your domain name.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== BLOG / INSIGHTS SECTION ===== -->
+    <section id="blog" class="section">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-number">11</span>
+          <h2 class="section-title split-text">Insights</h2>
+          <div class="section-line"></div>
+        </div>
+        <p class="blog-subtitle reveal-text">Tips, trends, and behind-the-scenes looks at how we build.</p>
+        <div class="blog-grid">
+          <article class="blog-card reveal-up">
+            <div class="blog-card-image" style="--hue: 180">
+              <span class="blog-tag">Design</span>
+            </div>
+            <div class="blog-card-body">
+              <time class="blog-date">Mar 2026</time>
+              <h3>Why Your Business Needs More Than a Template</h3>
+              <p>Templates look the same because they are the same. Here's why custom design converts better and costs less than you think.</p>
+              <span class="blog-read-more magnetic">Read More &rarr;</span>
+            </div>
+          </article>
+          <article class="blog-card reveal-up">
+            <div class="blog-card-image" style="--hue: 260">
+              <span class="blog-tag">Performance</span>
+            </div>
+            <div class="blog-card-body">
+              <time class="blog-date">Mar 2026</time>
+              <h3>Speed Kills (Slow Sites Kill Sales)</h3>
+              <p>53% of mobile visitors leave if a page takes over 3 seconds to load. Here's how we build sites that load in under 2.</p>
+              <span class="blog-read-more magnetic">Read More &rarr;</span>
+            </div>
+          </article>
+          <article class="blog-card reveal-up">
+            <div class="blog-card-image" style="--hue: 320">
+              <span class="blog-tag">Animations</span>
+            </div>
+            <div class="blog-card-body">
+              <time class="blog-date">Mar 2026</time>
+              <h3>Clean Animations: The Secret to a Premium Feel</h3>
+              <p>The difference between a $500 site and a $5,000 site often comes down to animation quality. Here's our approach.</p>
+              <span class="blog-read-more magnetic">Read More &rarr;</span>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -515,84 +1165,39 @@
     <section id="contact" class="section">
       <div class="section-container">
         <div class="section-header">
-          <span class="section-number">05</span>
-          <h2 class="section-title split-text">Get In Touch</h2>
+          <span class="section-number">12</span>
+          <h2 class="section-title split-text">Start a Project</h2>
           <div class="section-line"></div>
         </div>
-        <div class="contact-grid">
-          <div class="contact-info">
-            <p class="contact-lead reveal-text">
-              Interested in collaborating, joining our team, or learning more about our research? We'd love to hear from you.
-            </p>
-            <div class="contact-details">
-              <div class="contact-item reveal-up">
-                <span class="contact-label">Email</span>
-                <a href="mailto:hello@nexus-ai.dev" class="contact-value magnetic">hello@nexus-ai.dev</a>
-              </div>
-              <div class="contact-item reveal-up">
-                <span class="contact-label">Location</span>
-                <span class="contact-value">San Francisco, CA</span>
-              </div>
-              <div class="contact-item reveal-up">
-                <span class="contact-label">Social</span>
-                <div class="social-links">
-                  <a href="#" class="social-link magnetic" aria-label="GitHub">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                  </a>
-                  <a href="#" class="social-link magnetic" aria-label="Twitter">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                  </a>
-                  <a href="#" class="social-link magnetic" aria-label="LinkedIn">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                  </a>
-                </div>
-              </div>
+        <div class="contact-cta" style="text-align: center; max-width: 600px; margin: 0 auto;">
+          <p class="contact-lead reveal-text" style="margin-bottom: 20px;">
+            Ready to bring your vision to life? Tell us about your project and we'll get back to you within 48 hours.
+          </p>
+          <div class="contact-details" style="margin-bottom: 40px;">
+            <div class="contact-item reveal-up" style="justify-content: center;">
+              <span class="contact-label">Email</span>
+              <a href="mailto:hello@nexus-ai.dev" class="contact-value magnetic">hello@nexus-ai.dev</a>
             </div>
           </div>
-          <form class="contact-form" id="contact-form">
-            <div class="form-group reveal-up">
-              <input type="text" id="name" name="name" required placeholder=" ">
-              <label for="name">Your Name</label>
-              <div class="input-line"></div>
-            </div>
-            <div class="form-group reveal-up">
-              <input type="email" id="email" name="email" required placeholder=" ">
-              <label for="email">Email Address</label>
-              <div class="input-line"></div>
-            </div>
-            <div class="form-group reveal-up">
-              <select id="subject" name="subject" required>
-                <option value="" disabled selected></option>
-                <option value="collaboration">Research Collaboration</option>
-                <option value="careers">Careers</option>
-                <option value="press">Press Inquiry</option>
-                <option value="other">Other</option>
-              </select>
-              <label for="subject">Subject</label>
-              <div class="input-line"></div>
-            </div>
-            <div class="form-group reveal-up">
-              <textarea id="message" name="message" rows="4" required placeholder=" "></textarea>
-              <label for="message">Message</label>
-              <div class="input-line"></div>
-            </div>
-            <button type="submit" class="btn btn-primary btn-submit magnetic reveal-up">
-              <span class="btn-text">Send Message</span>
+          <div class="contact-buttons reveal-up" style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+            <a href="form.html" class="btn btn-primary magnetic" style="display: inline-flex; font-size: 16px; padding: 18px 48px;">
+              <span class="btn-text">Submit a Project Inquiry</span>
               <span class="btn-icon">&rarr;</span>
               <span class="btn-bg"></span>
-              <span class="btn-loading">
-                <span class="spinner"></span>
-              </span>
-              <span class="btn-success">Sent!</span>
-            </button>
-          </form>
+            </a>
+            <a href="#" class="btn btn-outline magnetic book-call-btn" style="display: inline-flex; font-size: 16px; padding: 18px 48px;" onclick="return false;">
+              <span class="btn-text">Book a Free Call</span>
+              <span class="btn-icon">&#9742;</span>
+            </a>
+          </div>
+          <p class="contact-note reveal-text" style="margin-top: 16px; font-size: 0.85rem; color: var(--text-muted);">No commitment — just a 15-minute chat about your project.</p>
         </div>
       </div>
     </section>
   </main>
 
   <!-- Footer -->
-  <footer id="footer">
+  <footer id="footer" role="contentinfo">
     <div class="footer-content">
       <div class="footer-top">
         <div class="footer-brand">
@@ -603,22 +1208,22 @@
         </div>
         <div class="footer-links">
           <div class="footer-col">
-            <h4>Research</h4>
-            <a href="#">Papers</a>
-            <a href="#">Blog</a>
-            <a href="#">Talks</a>
+            <h4>Services</h4>
+            <a href="#pricing">Landing Pages</a>
+            <a href="#pricing">Full Websites</a>
+            <a href="#pricing">Redesigns</a>
           </div>
           <div class="footer-col">
             <h4>Company</h4>
-            <a href="#">About</a>
-            <a href="#">Careers</a>
-            <a href="#">Contact</a>
+            <a href="#about">About</a>
+            <a href="#blog">Blog</a>
+            <a href="#contact">Contact</a>
           </div>
           <div class="footer-col">
-            <h4>Open Source</h4>
-            <a href="#">GitHub</a>
-            <a href="#">Docs</a>
-            <a href="#">Community</a>
+            <h4>Resources</h4>
+            <a href="#faq">FAQ</a>
+            <a href="#process">Our Process</a>
+            <a href="#industries">Industries</a>
           </div>
         </div>
       </div>
@@ -631,6 +1236,17 @@
       </div>
     </div>
   </footer>
+
+  <!-- Scroll to Top -->
+  <button class="scroll-to-top" aria-label="Scroll to top" title="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
+
+  <!-- Cookie / Privacy Notice -->
+  <div class="cookie-notice" id="cookie-notice" role="alert">
+    <p>We collect form submissions to respond to your inquiry. No tracking cookies are used.</p>
+    <button class="cookie-accept" id="cookie-accept">Got It</button>
+  </div>
 
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
